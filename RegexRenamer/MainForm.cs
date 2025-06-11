@@ -740,7 +740,7 @@ namespace RegexRenamer
         DirectoryInfo[] dirs = new DirectoryInfo[0];
         try
         {
-          dirs = activeDir.GetDirectories();
+          dirs = activeDir.GetDirectories( "*", (cbRecursive.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly));
         }
         catch( Exception ex )
         {
@@ -755,8 +755,8 @@ namespace RegexRenamer
 
           if( filter != null && filter.IsMatch( dir.Name ) == cbFilterExclude.Checked )
           {
-            if( !inactiveFiles.ContainsKey( dir.Name.ToLower() ) )
-              inactiveFiles.Add( dir.Name.ToLower(), InactiveReason.Filtered );
+            if( !inactiveFiles.ContainsKey( dir.FullName.ToLower() ) )
+              inactiveFiles.Add( dir.FullName.ToLower(), InactiveReason.Filtered );
             fileCount.filtered++;
             continue;
           }
@@ -773,8 +773,8 @@ namespace RegexRenamer
           if( hidden ) fileCount.hidden++;
           if( !itmOptionsShowHidden.Checked && hidden )
           {
-            if( !inactiveFiles.ContainsKey( dir.Name.ToLower() ) )
-              inactiveFiles.Add( dir.Name.ToLower(), InactiveReason.Hidden );
+            if( !inactiveFiles.ContainsKey( dir.FullName.ToLower() ) )
+              inactiveFiles.Add( dir.FullName.ToLower(), InactiveReason.Hidden );
             continue;
           }
 
@@ -786,7 +786,7 @@ namespace RegexRenamer
         FileInfo[] files = new FileInfo[0];
         try
         {
-          files = activeDir.GetFiles();
+          files = activeDir.GetFiles("*", (cbRecursive.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly));
         }
         catch( Exception ex )
         {
@@ -802,8 +802,8 @@ namespace RegexRenamer
 
           if( filter != null && filter.IsMatch( file.Name ) == cbFilterExclude.Checked )
           {
-            if( !inactiveFiles.ContainsKey( file.Name.ToLower() ) )
-              inactiveFiles.Add( file.Name.ToLower(), InactiveReason.Filtered );
+            if( !inactiveFiles.ContainsKey( file.FullName.ToLower() ) )
+              inactiveFiles.Add( file.FullName.ToLower(), InactiveReason.Filtered );
             fileCount.filtered++;
             continue;
           }
@@ -821,8 +821,8 @@ namespace RegexRenamer
           if( hidden ) fileCount.hidden++;
           if( !itmOptionsShowHidden.Checked && hidden )
           {
-            if( !inactiveFiles.ContainsKey( file.Name.ToLower() ) )
-              inactiveFiles.Add( file.Name.ToLower(), InactiveReason.Hidden );
+            if( !inactiveFiles.ContainsKey( file.FullName.ToLower() ) )
+              inactiveFiles.Add( file.FullName.ToLower(), InactiveReason.Hidden );
             continue;
           }
 
@@ -846,8 +846,13 @@ namespace RegexRenamer
 
 
         // add new item
-
-        dgvFiles.Rows.Add( null, activeFiles[i].Name, null );
+        string DisplayName = activeFiles[i].Name;
+        if (cbRecursive.Checked) {
+            DisplayName = Path.Combine(activeFiles[i].Directory.Replace(activePath, ""), activeFiles[i].Name);
+            if (DisplayName.Length > 0 && DisplayName[0] == '\\')
+                DisplayName = DisplayName.Substring(1);
+        }
+        dgvFiles.Rows.Add( null, DisplayName, null );
         dgvFiles.Rows[i].Tag = i;  // store activeFiles index so we can refer back when under different sorting
 
 
@@ -1082,7 +1087,7 @@ namespace RegexRenamer
       {
         int afi = (int)dgvFiles.Rows[dfi].Tag;              // afi = activeFiles index
 
-        string preview = activeFiles[afi].PreviewExt.ToLower();
+        string preview = activeFiles[afi].PreviewFullPath.ToLower();
 
         if( !hashPreview.ContainsKey( preview ) )
           hashPreview.Add( preview, new List<int>() );
@@ -1101,7 +1106,7 @@ namespace RegexRenamer
       for( int dfi = 0; dfi < dgvFiles.Rows.Count; dfi++ )
       {
         int afi = (int)dgvFiles.Rows[dfi].Tag;
-        string preview = activeFiles[afi].PreviewExt.ToLower();
+        string preview = activeFiles[afi].PreviewFullPath.ToLower();
 
 
         // skip if already has an error, or an ignored file
@@ -1176,7 +1181,7 @@ namespace RegexRenamer
 
           if( dgvFiles.Rows.Count < 2000 )  // this check is expensive, only run if < 2000 items
           {
-            string previewFullpath = Path.Combine( outputPath, activeFiles[afi].PreviewExt );
+            string previewFullpath = activeFiles[afi].PreviewFullPath;
             if( RenameFolders ? File.Exists( previewFullpath ) : Directory.Exists( previewFullpath ) )
             {
               dgvFiles.Rows[dfi].Cells[2].Tag = "The " + strFilename + " '" + activeFiles[afi].PreviewExt
@@ -1188,7 +1193,7 @@ namespace RegexRenamer
         }
         else  // destination is other directory, check against file system
         {
-          string previewFullpath = Path.Combine( outputPath, activeFiles[afi].PreviewExt );
+          string previewFullpath = activeFiles[afi].PreviewFullPath;
 
           if( RenameFolders ? Directory.Exists( previewFullpath ) : File.Exists( previewFullpath ) )
           {
@@ -3004,21 +3009,26 @@ namespace RegexRenamer
       float filesRenamed = 0.5F;
 
       string outputPath = activePath;
-      if( itmOutputMoveTo.Checked || itmOutputCopyTo.Checked )
-        outputPath = fbdMoveCopy.SelectedPath;
+        if (itmOutputMoveTo.Checked || itmOutputCopyTo.Checked)
+            outputPath = fbdMoveCopy.SelectedPath;
+        else if (cbRecursive.Checked)
+            outputPath = "";
 
 
       for( int afi = 0; afi < activeFiles.Count; afi++ )
       {
         // abort if user cancelled
 
-        if( bw.CancellationPending )
+
+        if (outputPath == "")
+            outputPath = activeFiles[afi].Directory;
+
+        if ( bw.CancellationPending || outputPath == "")
         {
           // e.Cancel = true;       // don't use this as it prevents access to the result object
           result.Cancelled = true;  // use our own instead
           break;
         }
-
 
         // skip ignored/unselected files
 
@@ -3043,11 +3053,11 @@ namespace RegexRenamer
         filesRenamed++;
 
 
-        // get new fullpath
+                // get new fullpath
 
-        string newFullpath = Path.Combine( outputPath, activeFiles[afi].Preview );
-        if( itmOptionsPreserveExt.Checked )
-          newFullpath += activeFiles[afi].Extension;
+          string newFullpath = activeFiles[afi].PreviewFullPath;
+          //if ( itmOptionsPreserveExt.Checked )
+          //  newFullpath += activeFiles[afi].Extension;
 
 
         // create subdirs (if any)
@@ -3199,8 +3209,18 @@ namespace RegexRenamer
       cmbMatch.Focus();
     }
 
-    #endregion
-  }
+        #endregion
+
+        private void cbRecursive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!EnableUpdates || cmbMatch.Text.StartsWith("/")) return;  // skip when selection from combobox
+
+            if (itmOptionsRealtimePreview.Checked)
+                UpdatePreview();
+
+            ApplyFilter();
+        }
+    }
 }
 
 

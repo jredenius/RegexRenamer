@@ -12,14 +12,14 @@
     <AssemblyName>RegexRenamer</AssemblyName>
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>true</GenerateManifests>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>RegexRenamer_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
-    <ManifestCertificateThumbprint>344E51E62D44DFC485A0F4C16AC017C875898B18</ManifestCertificateThumbprint>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <ManifestCertificateThumbprint>BF397153145B95B1EDF81C490F345EF5BEEC9291</ManifestCertificateThumbprint>
     <ManifestKeyFile>RegexRenamer_TemporaryKey.pfx</ManifestKeyFile>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject>RegexRenamer.Program</StartupObject>
     <ManifestTimestampUrl>http://timestamp.digicert.com/?alg=sha256</ManifestTimestampUrl>
     <FileUpgradeFlags>
@@ -216,6 +216,9 @@
   <ItemGroup>
     <None Include="Resources\x.png" />
     <None Include="Resources\network.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

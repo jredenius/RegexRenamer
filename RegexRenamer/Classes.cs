@@ -26,6 +26,7 @@ namespace RegexRenamer
     public string Basename;   // [subdir\]filename
     public string Extension;  // .txt
     public string Fullpath;   // c:\..\[subdir\]filename.txt
+    public string Directory;  // c:\..\subdir\
     public string Preview;    // [subdir\]newfilename[.txt]
     public bool Hidden;       // true if hidden file
     public bool Matched;      // true if matches current regex
@@ -39,6 +40,7 @@ namespace RegexRenamer
       this.Extension = fi.Extension;
       this.Fullpath = fi.FullName;
       this.Preview = fi.Name;
+      this.Directory = Path.GetDirectoryName(fi.FullName);
       this.Hidden = hidden;
       this.Matched = false;
       this.PreserveExt = preserveext;
@@ -51,6 +53,7 @@ namespace RegexRenamer
       this.Extension = "";
       this.Fullpath = di.FullName;
       this.Preview = di.Name;
+      this.Directory = Path.GetDirectoryName(di.FullName);
       this.Hidden = hidden;
       this.Matched = false;
       this.PreserveExt = preserveext;
@@ -76,6 +79,14 @@ namespace RegexRenamer
         else
           return this.Preview;
       }
+        }
+
+    public string PreviewFullPath
+    {
+        get
+        {
+            return Path.Combine(this.Directory, (PreserveExt ? this.Preview + this.Extension : this.Preview)); // c:\..\subdir\newfilename[.txt]
+        }
     }
   }
 
