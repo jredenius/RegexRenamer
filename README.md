@@ -15,4 +15,4 @@ This fork modifies the following:
 
 ## Objective
 > [!NOTE]
-> This repo was initially seeded using [https://sourceforge.net/projects/regexrenamer/files/RegexRenamer/1.3.1/RegexRenamer_Source_v1.3.1.zip](https://github.com/joshg253/RegexRenamer).
+> This repo was forked from [joshg253/RegexRenamer](https://github.com/joshg253/RegexRenamer).
