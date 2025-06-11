@@ -13,6 +13,5 @@ This fork modifies the following:
 | --- |
 
 
-## Objective
 > [!NOTE]
 > This repo was forked from [joshg253/RegexRenamer](https://github.com/joshg253/RegexRenamer).
