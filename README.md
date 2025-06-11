@@ -11,7 +11,6 @@ This fork modifies the following:
 
 | ![image](https://github.com/user-attachments/assets/df915cee-bc59-4431-a5bf-079fc8735e85) |
 | --- |
-| *The main window, replacing spaces & dashes with underscores.* |
 
 
 ## Objective
