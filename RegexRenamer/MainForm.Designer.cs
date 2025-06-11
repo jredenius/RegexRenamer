@@ -68,9 +68,6 @@ namespace RegexRenamer
             this.lblStats = new System.Windows.Forms.Label();
             this.lblMatch = new System.Windows.Forms.Label();
             this.lblReplace = new System.Windows.Forms.Label();
-            this.cbModifierI = new System.Windows.Forms.CheckBox();
-            this.cbModifierG = new System.Windows.Forms.CheckBox();
-            this.cbModifierX = new System.Windows.Forms.CheckBox();
             this.txtReplace = new System.Windows.Forms.TextBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.btnNetwork = new System.Windows.Forms.Button();
@@ -173,7 +170,6 @@ namespace RegexRenamer
             this.miGlobMatchSingle = new System.Windows.Forms.MenuItem();
             this.miGlobMatchMultiple = new System.Windows.Forms.MenuItem();
             this.cmsBlank = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.scRegex = new System.Windows.Forms.SplitContainer();
             this.scMain = new System.Windows.Forms.SplitContainer();
             this.dgvFiles = new System.Windows.Forms.DataGridView();
             this.colIcon = new System.Windows.Forms.DataGridViewImageColumn();
@@ -206,13 +202,12 @@ namespace RegexRenamer
             this.btnRename = new Microsoft.Samples.SplitButton();
             this.cmbMatch = new RegexRenamer.MyComboBox();
             this.tvwFolders = new Furty.Windows.Forms.FolderTreeView();
+            this.cbModifierG = new System.Windows.Forms.CheckBox();
+            this.cbModifierI = new System.Windows.Forms.CheckBox();
+            this.cbModifierX = new System.Windows.Forms.CheckBox();
             this.gbFilter.SuspendLayout();
             this.pnlStats.SuspendLayout();
             this.tsMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scRegex)).BeginInit();
-            this.scRegex.Panel1.SuspendLayout();
-            this.scRegex.Panel2.SuspendLayout();
-            this.scRegex.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -292,7 +287,7 @@ namespace RegexRenamer
             this.gbFilter.Controls.Add(this.txtFilter);
             this.gbFilter.Controls.Add(this.rbFilterGlob);
             this.gbFilter.Controls.Add(this.rbFilterRegex);
-            this.gbFilter.Location = new System.Drawing.Point(1102, 9);
+            this.gbFilter.Location = new System.Drawing.Point(1074, 9);
             this.gbFilter.Margin = new System.Windows.Forms.Padding(4);
             this.gbFilter.Name = "gbFilter";
             this.gbFilter.Padding = new System.Windows.Forms.Padding(4);
@@ -387,7 +382,7 @@ namespace RegexRenamer
             this.pnlStats.Controls.Add(this.lblStatsShown);
             this.pnlStats.Controls.Add(this.lblStatsFiltered);
             this.pnlStats.Controls.Add(this.lblStatsTotal);
-            this.pnlStats.Location = new System.Drawing.Point(11, 7);
+            this.pnlStats.Location = new System.Drawing.Point(750, 19);
             this.pnlStats.Margin = new System.Windows.Forms.Padding(4);
             this.pnlStats.Name = "pnlStats";
             this.pnlStats.Size = new System.Drawing.Size(189, 44);
@@ -437,7 +432,7 @@ namespace RegexRenamer
             // 
             this.lblStats.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStats.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.lblStats.Location = new System.Drawing.Point(1277, 9);
+            this.lblStats.Location = new System.Drawing.Point(1249, 9);
             this.lblStats.Margin = new System.Windows.Forms.Padding(0);
             this.lblStats.Name = "lblStats";
             this.lblStats.Size = new System.Drawing.Size(41, 16);
@@ -449,7 +444,7 @@ namespace RegexRenamer
             // lblMatch
             // 
             this.lblMatch.AutoSize = true;
-            this.lblMatch.Location = new System.Drawing.Point(-4, 4);
+            this.lblMatch.Location = new System.Drawing.Point(17, 17);
             this.lblMatch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMatch.Name = "lblMatch";
             this.lblMatch.Size = new System.Drawing.Size(46, 16);
@@ -459,66 +454,22 @@ namespace RegexRenamer
             // lblReplace
             // 
             this.lblReplace.AutoSize = true;
-            this.lblReplace.Location = new System.Drawing.Point(-4, 37);
+            this.lblReplace.Location = new System.Drawing.Point(17, 50);
             this.lblReplace.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblReplace.Name = "lblReplace";
             this.lblReplace.Size = new System.Drawing.Size(62, 16);
             this.lblReplace.TabIndex = 0;
             this.lblReplace.Text = "Replace:";
             // 
-            // cbModifierI
-            // 
-            this.cbModifierI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbModifierI.AutoSize = true;
-            this.cbModifierI.Location = new System.Drawing.Point(793, -1);
-            this.cbModifierI.Margin = new System.Windows.Forms.Padding(4);
-            this.cbModifierI.Name = "cbModifierI";
-            this.cbModifierI.Size = new System.Drawing.Size(36, 20);
-            this.cbModifierI.TabIndex = 3;
-            this.cbModifierI.Tag = false;
-            this.cbModifierI.Text = "/i";
-            this.toolTip.SetToolTip(this.cbModifierI, "Ignore case");
-            this.cbModifierI.UseVisualStyleBackColor = true;
-            this.cbModifierI.CheckedChanged += new System.EventHandler(this.cbModifierI_CheckedChanged);
-            // 
-            // cbModifierG
-            // 
-            this.cbModifierG.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbModifierG.AutoSize = true;
-            this.cbModifierG.Location = new System.Drawing.Point(793, 20);
-            this.cbModifierG.Margin = new System.Windows.Forms.Padding(4);
-            this.cbModifierG.Name = "cbModifierG";
-            this.cbModifierG.Size = new System.Drawing.Size(41, 20);
-            this.cbModifierG.TabIndex = 4;
-            this.cbModifierG.Tag = false;
-            this.cbModifierG.Text = "/g";
-            this.toolTip.SetToolTip(this.cbModifierG, "Global (match as many times as possible)");
-            this.cbModifierG.UseVisualStyleBackColor = true;
-            this.cbModifierG.CheckedChanged += new System.EventHandler(this.cbModifierG_CheckedChanged);
-            // 
-            // cbModifierX
-            // 
-            this.cbModifierX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbModifierX.AutoSize = true;
-            this.cbModifierX.Location = new System.Drawing.Point(794, 41);
-            this.cbModifierX.Margin = new System.Windows.Forms.Padding(4);
-            this.cbModifierX.Name = "cbModifierX";
-            this.cbModifierX.Size = new System.Drawing.Size(39, 20);
-            this.cbModifierX.TabIndex = 5;
-            this.cbModifierX.Tag = false;
-            this.cbModifierX.Text = "/x";
-            this.toolTip.SetToolTip(this.cbModifierX, "Extended regex (ignore unescaped spaces)");
-            this.cbModifierX.UseVisualStyleBackColor = true;
-            this.cbModifierX.CheckedChanged += new System.EventHandler(this.cbModifierX_CheckedChanged);
-            // 
             // txtReplace
             // 
-            this.txtReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtReplace.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtReplace.Location = new System.Drawing.Point(71, 33);
+            this.txtReplace.Location = new System.Drawing.Point(82, 46);
             this.txtReplace.Margin = new System.Windows.Forms.Padding(4);
             this.txtReplace.Name = "txtReplace";
-            this.txtReplace.Size = new System.Drawing.Size(666, 23);
+            this.txtReplace.Size = new System.Drawing.Size(607, 23);
             this.txtReplace.TabIndex = 2;
             this.toolTip.SetToolTip(this.txtReplace, "Use $1, $2, ... to insert captured text");
             this.txtReplace.TextChanged += new System.EventHandler(this.txtReplace_TextChanged);
@@ -531,7 +482,7 @@ namespace RegexRenamer
             // 
             this.btnNetwork.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnNetwork.Image = ((System.Drawing.Image)(resources.GetObject("btnNetwork.Image")));
-            this.btnNetwork.Location = new System.Drawing.Point(420, 719);
+            this.btnNetwork.Location = new System.Drawing.Point(420, 725);
             this.btnNetwork.Margin = new System.Windows.Forms.Padding(4);
             this.btnNetwork.Name = "btnNetwork";
             this.btnNetwork.Size = new System.Drawing.Size(48, 30);
@@ -543,7 +494,7 @@ namespace RegexRenamer
             // txtPath
             // 
             this.txtPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtPath.Location = new System.Drawing.Point(59, 722);
+            this.txtPath.Location = new System.Drawing.Point(59, 728);
             this.txtPath.Margin = new System.Windows.Forms.Padding(4);
             this.txtPath.Name = "txtPath";
             this.txtPath.Size = new System.Drawing.Size(357, 22);
@@ -558,7 +509,7 @@ namespace RegexRenamer
             this.lblNumMatched.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNumMatched.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblNumMatched.ForeColor = System.Drawing.Color.Blue;
-            this.lblNumMatched.Location = new System.Drawing.Point(1102, 724);
+            this.lblNumMatched.Location = new System.Drawing.Point(1074, 730);
             this.lblNumMatched.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNumMatched.Name = "lblNumMatched";
             this.lblNumMatched.Size = new System.Drawing.Size(47, 20);
@@ -572,7 +523,7 @@ namespace RegexRenamer
             this.lblNumConflict.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNumConflict.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblNumConflict.ForeColor = System.Drawing.Color.Red;
-            this.lblNumConflict.Location = new System.Drawing.Point(1157, 724);
+            this.lblNumConflict.Location = new System.Drawing.Point(1129, 730);
             this.lblNumConflict.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNumConflict.Name = "lblNumConflict";
             this.lblNumConflict.Size = new System.Drawing.Size(47, 20);
@@ -596,7 +547,7 @@ namespace RegexRenamer
             this.mnuNumbering,
             this.mnuMoveCopy});
             this.tsMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.tsMenu.Location = new System.Drawing.Point(971, 7);
+            this.tsMenu.Location = new System.Drawing.Point(943, 7);
             this.tsMenu.Name = "tsMenu";
             this.tsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.tsMenu.Size = new System.Drawing.Size(123, 66);
@@ -628,20 +579,20 @@ namespace RegexRenamer
             this.itmChangeCaseNoChange.CheckState = System.Windows.Forms.CheckState.Checked;
             this.itmChangeCaseNoChange.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.itmChangeCaseNoChange.Name = "itmChangeCaseNoChange";
-            this.itmChangeCaseNoChange.Size = new System.Drawing.Size(224, 26);
+            this.itmChangeCaseNoChange.Size = new System.Drawing.Size(156, 26);
             this.itmChangeCaseNoChange.Text = "No change";
             this.itmChangeCaseNoChange.Click += new System.EventHandler(this.itmChangeCaseNoChange_Click);
             // 
             // itmChangeCaseSep
             // 
             this.itmChangeCaseSep.Name = "itmChangeCaseSep";
-            this.itmChangeCaseSep.Size = new System.Drawing.Size(221, 6);
+            this.itmChangeCaseSep.Size = new System.Drawing.Size(153, 6);
             // 
             // itmChangeCaseUppercase
             // 
             this.itmChangeCaseUppercase.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.itmChangeCaseUppercase.Name = "itmChangeCaseUppercase";
-            this.itmChangeCaseUppercase.Size = new System.Drawing.Size(224, 26);
+            this.itmChangeCaseUppercase.Size = new System.Drawing.Size(156, 26);
             this.itmChangeCaseUppercase.Text = "Uppercase";
             this.itmChangeCaseUppercase.Click += new System.EventHandler(this.itmChangeCaseUppercase_Click);
             // 
@@ -649,7 +600,7 @@ namespace RegexRenamer
             // 
             this.itmChangeCaseLowercase.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.itmChangeCaseLowercase.Name = "itmChangeCaseLowercase";
-            this.itmChangeCaseLowercase.Size = new System.Drawing.Size(224, 26);
+            this.itmChangeCaseLowercase.Size = new System.Drawing.Size(156, 26);
             this.itmChangeCaseLowercase.Text = "Lowercase";
             this.itmChangeCaseLowercase.Click += new System.EventHandler(this.itmChangeCaseLowercase_Click);
             // 
@@ -657,7 +608,7 @@ namespace RegexRenamer
             // 
             this.itmChangeCaseTitlecase.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.itmChangeCaseTitlecase.Name = "itmChangeCaseTitlecase";
-            this.itmChangeCaseTitlecase.Size = new System.Drawing.Size(224, 26);
+            this.itmChangeCaseTitlecase.Size = new System.Drawing.Size(156, 26);
             this.itmChangeCaseTitlecase.Text = "Title case";
             this.itmChangeCaseTitlecase.Click += new System.EventHandler(this.itmChangeCaseTitlecase_Click);
             // 
@@ -1311,39 +1262,6 @@ namespace RegexRenamer
             this.cmsBlank.Name = "cmsBlank";
             this.cmsBlank.Size = new System.Drawing.Size(61, 4);
             // 
-            // scRegex
-            // 
-            this.scRegex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scRegex.Location = new System.Drawing.Point(16, 15);
-            this.scRegex.Margin = new System.Windows.Forms.Padding(4);
-            this.scRegex.Name = "scRegex";
-            // 
-            // scRegex.Panel1
-            // 
-            this.scRegex.Panel1.Controls.Add(this.lblMatch);
-            this.scRegex.Panel1.Controls.Add(this.cmbMatch);
-            this.scRegex.Panel1.Controls.Add(this.txtReplace);
-            this.scRegex.Panel1.Controls.Add(this.lblReplace);
-            this.scRegex.Panel1.Controls.Add(this.cbModifierX);
-            this.scRegex.Panel1.Controls.Add(this.cbModifierI);
-            this.scRegex.Panel1.Controls.Add(this.cbModifierG);
-            this.scRegex.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.scRegex_Panel1_Paint);
-            this.scRegex.Panel1MinSize = 248;
-            // 
-            // scRegex.Panel2
-            // 
-            this.scRegex.Panel2.Controls.Add(this.pnlStats);
-            this.scRegex.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.scRegex_Panel2_Paint);
-            this.scRegex.Panel2MinSize = 8;
-            this.scRegex.Size = new System.Drawing.Size(949, 58);
-            this.scRegex.SplitterDistance = 741;
-            this.scRegex.TabIndex = 0;
-            this.scRegex.TabStop = false;
-            this.scRegex.Paint += new System.Windows.Forms.PaintEventHandler(this.scRegex_Paint);
-            this.scRegex.DoubleClick += new System.EventHandler(this.scRegex_DoubleClick);
-            this.scRegex.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scRegex_MouseUp);
-            // 
             // scMain
             // 
             this.scMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1362,7 +1280,7 @@ namespace RegexRenamer
             // scMain.Panel2
             // 
             this.scMain.Panel2.Controls.Add(this.dgvFiles);
-            this.scMain.Size = new System.Drawing.Size(1317, 635);
+            this.scMain.Size = new System.Drawing.Size(1289, 641);
             this.scMain.SplitterDistance = 300;
             this.scMain.SplitterWidth = 7;
             this.scMain.TabIndex = 3;
@@ -1396,7 +1314,7 @@ namespace RegexRenamer
             this.dgvFiles.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvFiles.ShowCellToolTips = false;
-            this.dgvFiles.Size = new System.Drawing.Size(1010, 635);
+            this.dgvFiles.Size = new System.Drawing.Size(982, 641);
             this.dgvFiles.StandardTab = true;
             this.dgvFiles.TabIndex = 6;
             this.dgvFiles.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvFiles_CellBeginEdit);
@@ -1440,7 +1358,7 @@ namespace RegexRenamer
             // 
             this.lblPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPath.AutoSize = true;
-            this.lblPath.Location = new System.Drawing.Point(16, 725);
+            this.lblPath.Location = new System.Drawing.Point(16, 731);
             this.lblPath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPath.Name = "lblPath";
             this.lblPath.Size = new System.Drawing.Size(37, 16);
@@ -1490,7 +1408,7 @@ namespace RegexRenamer
             this.mnuOptions,
             this.mnuHelp});
             this.tsOptions.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.tsOptions.Location = new System.Drawing.Point(962, 724);
+            this.tsOptions.Location = new System.Drawing.Point(934, 730);
             this.tsOptions.Name = "tsOptions";
             this.tsOptions.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.tsOptions.Size = new System.Drawing.Size(128, 22);
@@ -1641,17 +1559,17 @@ namespace RegexRenamer
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(476, 721);
+            this.progressBar.Location = new System.Drawing.Point(16, 75);
             this.progressBar.Margin = new System.Windows.Forms.Padding(4);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(732, 27);
+            this.progressBar.Size = new System.Drawing.Size(1289, 10);
             this.progressBar.TabIndex = 0;
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(1220, 719);
+            this.btnCancel.Location = new System.Drawing.Point(1192, 725);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(113, 30);
@@ -1674,7 +1592,7 @@ namespace RegexRenamer
             this.btnRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRename.AutoSize = true;
             this.btnRename.ContextMenuStrip = this.cmsRename;
-            this.btnRename.Location = new System.Drawing.Point(1220, 719);
+            this.btnRename.Location = new System.Drawing.Point(1192, 725);
             this.btnRename.Margin = new System.Windows.Forms.Padding(4);
             this.btnRename.Name = "btnRename";
             this.btnRename.Size = new System.Drawing.Size(113, 32);
@@ -1686,12 +1604,13 @@ namespace RegexRenamer
             // 
             // cmbMatch
             // 
-            this.cmbMatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbMatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbMatch.Font = new System.Drawing.Font("Courier New", 8.25F);
-            this.cmbMatch.Location = new System.Drawing.Point(71, 0);
+            this.cmbMatch.Location = new System.Drawing.Point(82, 13);
             this.cmbMatch.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMatch.Name = "cmbMatch";
-            this.cmbMatch.Size = new System.Drawing.Size(666, 25);
+            this.cmbMatch.Size = new System.Drawing.Size(607, 25);
             this.cmbMatch.TabIndex = 1;
             this.toolTip.SetToolTip(this.cmbMatch, "Shift+rightclick for a menu of regex elements");
             this.cmbMatch.SelectedIndexChanged += new System.EventHandler(this.cmbMatch_SelectedIndexChanged);
@@ -1709,16 +1628,71 @@ namespace RegexRenamer
             this.tvwFolders.Location = new System.Drawing.Point(0, 0);
             this.tvwFolders.Margin = new System.Windows.Forms.Padding(4);
             this.tvwFolders.Name = "tvwFolders";
-            this.tvwFolders.Size = new System.Drawing.Size(300, 635);
+            this.tvwFolders.Size = new System.Drawing.Size(300, 641);
             this.tvwFolders.TabIndex = 1;
             this.tvwFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwFolders_AfterSelect);
             this.tvwFolders.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tvwFolders_KeyUp);
+            // 
+            // cbModifierG
+            // 
+            this.cbModifierG.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbModifierG.AutoSize = true;
+            this.cbModifierG.Location = new System.Drawing.Point(707, 31);
+            this.cbModifierG.Margin = new System.Windows.Forms.Padding(4);
+            this.cbModifierG.Name = "cbModifierG";
+            this.cbModifierG.Size = new System.Drawing.Size(41, 20);
+            this.cbModifierG.TabIndex = 4;
+            this.cbModifierG.Tag = false;
+            this.cbModifierG.Text = "/g";
+            this.toolTip.SetToolTip(this.cbModifierG, "Global (match as many times as possible)");
+            this.cbModifierG.UseVisualStyleBackColor = true;
+            this.cbModifierG.CheckedChanged += new System.EventHandler(this.cbModifierG_CheckedChanged);
+            // 
+            // cbModifierI
+            // 
+            this.cbModifierI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbModifierI.AutoSize = true;
+            this.cbModifierI.Location = new System.Drawing.Point(707, 13);
+            this.cbModifierI.Margin = new System.Windows.Forms.Padding(4);
+            this.cbModifierI.Name = "cbModifierI";
+            this.cbModifierI.Size = new System.Drawing.Size(36, 20);
+            this.cbModifierI.TabIndex = 3;
+            this.cbModifierI.Tag = false;
+            this.cbModifierI.Text = "/i";
+            this.toolTip.SetToolTip(this.cbModifierI, "Ignore case");
+            this.cbModifierI.UseVisualStyleBackColor = true;
+            this.cbModifierI.CheckedChanged += new System.EventHandler(this.cbModifierI_CheckedChanged);
+            // 
+            // cbModifierX
+            // 
+            this.cbModifierX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbModifierX.AutoSize = true;
+            this.cbModifierX.Location = new System.Drawing.Point(707, 50);
+            this.cbModifierX.Margin = new System.Windows.Forms.Padding(4);
+            this.cbModifierX.Name = "cbModifierX";
+            this.cbModifierX.Size = new System.Drawing.Size(39, 20);
+            this.cbModifierX.TabIndex = 5;
+            this.cbModifierX.Tag = false;
+            this.cbModifierX.Text = "/x";
+            this.toolTip.SetToolTip(this.cbModifierX, "Extended regex (ignore unescaped spaces)");
+            this.cbModifierX.UseVisualStyleBackColor = true;
+            this.cbModifierX.CheckedChanged += new System.EventHandler(this.cbModifierX_CheckedChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1349, 754);
+            this.ClientSize = new System.Drawing.Size(1321, 760);
+            this.Controls.Add(this.scMain);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.lblMatch);
+            this.Controls.Add(this.cmbMatch);
+            this.Controls.Add(this.cbModifierG);
+            this.Controls.Add(this.txtReplace);
+            this.Controls.Add(this.lblReplace);
+            this.Controls.Add(this.cbModifierI);
+            this.Controls.Add(this.cbModifierX);
+            this.Controls.Add(this.pnlStats);
             this.Controls.Add(this.btnNetwork);
             this.Controls.Add(this.txtPath);
             this.Controls.Add(this.btnRename);
@@ -1727,12 +1701,9 @@ namespace RegexRenamer
             this.Controls.Add(this.lblNumConflict);
             this.Controls.Add(this.lblNumMatched);
             this.Controls.Add(this.lblPath);
-            this.Controls.Add(this.scRegex);
             this.Controls.Add(this.lblStats);
             this.Controls.Add(this.tsMenu);
-            this.Controls.Add(this.scMain);
             this.Controls.Add(this.gbFilter);
-            this.Controls.Add(this.progressBar);
             this.Icon = global::RegexRenamer.Properties.Resources.icon;
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -1748,11 +1719,6 @@ namespace RegexRenamer
             this.pnlStats.ResumeLayout(false);
             this.tsMenu.ResumeLayout(false);
             this.tsMenu.PerformLayout();
-            this.scRegex.Panel1.ResumeLayout(false);
-            this.scRegex.Panel1.PerformLayout();
-            this.scRegex.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.scRegex)).EndInit();
-            this.scRegex.ResumeLayout(false);
             this.scMain.Panel1.ResumeLayout(false);
             this.scMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).EndInit();
@@ -1776,9 +1742,6 @@ namespace RegexRenamer
     private MyComboBox cmbMatch;
     private System.Windows.Forms.Label lblMatch;
     private System.Windows.Forms.Label lblReplace;
-    private System.Windows.Forms.CheckBox cbModifierI;
-    private System.Windows.Forms.CheckBox cbModifierG;
-    private System.Windows.Forms.CheckBox cbModifierX;
     private System.Windows.Forms.TextBox txtReplace;
     private System.Windows.Forms.ToolTip toolTip;
     private Furty.Windows.Forms.FolderTreeView tvwFolders;
@@ -1905,7 +1868,6 @@ namespace RegexRenamer
     private System.Windows.Forms.MenuItem miGlobMatchSingle;
     private System.Windows.Forms.MenuItem miGlobMatchMultiple;
     private System.Windows.Forms.ContextMenuStrip cmsBlank;
-    private System.Windows.Forms.SplitContainer scRegex;
     private System.Windows.Forms.Button btnCancel;
     private System.ComponentModel.BackgroundWorker bgwRename;
     private System.Windows.Forms.ToolStripMenuItem itmOptionsRememberWinPos;
@@ -1929,5 +1891,8 @@ namespace RegexRenamer
     private System.Windows.Forms.ToolStripMenuItem itmOptionsAddContextMenu;
     private System.Windows.Forms.ToolStripMenuItem itmOptionsRenameSelectedRows;
         private System.Windows.Forms.CheckBox cbRecursive;
+        private System.Windows.Forms.CheckBox cbModifierG;
+        private System.Windows.Forms.CheckBox cbModifierI;
+        private System.Windows.Forms.CheckBox cbModifierX;
     }
 }

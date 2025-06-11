@@ -471,13 +471,13 @@ namespace RegexRenamer
 
             // set splitter positions
 
-            int splitMain = (int)key.GetValue( "SplitMain", -1 );
-            int splitRegex = (int)key.GetValue( "SplitRegex", -1 );
+            int splitMain = (int)key.GetValue("SplitMain", -1);
+            //int splitRegex = (int)key.GetValue("SplitRegex", -1);
 
-            if( splitMain > 0 && splitRegex > 0 )
+            if (splitMain > 0)// && splitRegex > 0)
             {
-              scMain.SplitterDistance  = splitMain;  // will be bounded
-              scRegex.SplitterDistance = splitRegex; // automatically
+                scMain.SplitterDistance = splitMain;  // will be bounded
+                //scRegex.SplitterDistance = splitRegex; // automatically
             }
 
             key.Close();
@@ -552,7 +552,7 @@ namespace RegexRenamer
             key.SetValue( "WindowHeight", this.Height );
             key.SetValue( "WindowWidth", this.Width );
             key.SetValue( "SplitMain", scMain.SplitterDistance );
-            key.SetValue( "SplitRegex", scRegex.SplitterDistance );
+            //key.SetValue("SplitRegex", scRegex.SplitterDistance);
             key.SetValue( "WindowState", this.WindowState );
             key.Close();
           }
@@ -1559,16 +1559,16 @@ namespace RegexRenamer
     // draw thin 3d box around scRegex splitter
     private void scRegex_Paint( object sender, PaintEventArgs e )
     {
-      e.Graphics.DrawLine( SystemPens.ControlLight, 0, 0, scRegex.Width, 0 );
-      e.Graphics.DrawLine( SystemPens.ControlDark, 0, scRegex.Height - 1, scRegex.Width, scRegex.Height - 1 );
+      //e.Graphics.DrawLine( SystemPens.ControlLight, 0, 0, scRegex.Width, 0 );
+      //e.Graphics.DrawLine( SystemPens.ControlDark, 0, scRegex.Height - 1, scRegex.Width, scRegex.Height - 1 );
     }
     private void scRegex_Panel1_Paint( object sender, PaintEventArgs e )
     {
-      e.Graphics.DrawLine( SystemPens.ControlLight, scRegex.Panel1.Width - 1, 0, scRegex.Panel1.Width - 1, scRegex.Panel1.Height );
+      //e.Graphics.DrawLine( SystemPens.ControlLight, scRegex.Panel1.Width - 1, 0, scRegex.Panel1.Width - 1, scRegex.Panel1.Height );
     }
     private void scRegex_Panel2_Paint( object sender, PaintEventArgs e )
     {
-      e.Graphics.DrawLine( SystemPens.ControlDark, 0, 0, 0, scRegex.Panel2.Height );
+      //e.Graphics.DrawLine( SystemPens.ControlDark, 0, 0, 0, scRegex.Panel2.Height );
     }
 
     // prevent split containers obtaining focus
@@ -1588,7 +1588,7 @@ namespace RegexRenamer
     }
     private void scRegex_DoubleClick( object sender, EventArgs e )
     {
-      scRegex.SplitterDistance = 348;
+      //scRegex.SplitterDistance = 348;
     }
 
 
@@ -2321,15 +2321,15 @@ namespace RegexRenamer
       else
         txtFilter.Tag = null;
 
-      gbFilter.Enabled = false;
-      lblStats.ForeColor = Color.FromArgb( 0, 70, 213 );  // default winxp groupbox header colour
-      pnlStats.Visible = true;
+      //gbFilter.Enabled = false;
+      //lblStats.ForeColor = Color.FromArgb( 0, 70, 213 );  // default winxp groupbox header colour
+      //pnlStats.Visible = true;
     }
     private void lblStats_MouseLeave( object sender, EventArgs e )
     {
-      gbFilter.Enabled = true;
-      lblStats.ForeColor = SystemColors.ControlDark;
-      pnlStats.Visible = false;
+      //gbFilter.Enabled = true;
+      //lblStats.ForeColor = SystemColors.ControlDark;
+      //pnlStats.Visible = false;
 
       if( txtFilter.Tag != null )  // restore state
       {
@@ -2740,41 +2740,83 @@ namespace RegexRenamer
     private void itmOptionsAddContextMenu_Click( object sender, EventArgs e )
     {
       try
-      {
-        if( !itmOptionsAddContextMenu.Checked )  // add key
-        {
-          using( RegistryKey key = Registry.ClassesRoot.CreateSubKey( "Folder\\shell\\RegexRenamer" ) )
-          {
-            if( key != null )
             {
-              key.SetValue( "", "Rename using RegexRenamer" );
-              key.Close();
+                // Path to the PowerShell script
+                string scriptPath = Path.Combine(Application.StartupPath, "RegexRenamer-ContextMenu.ps1");
+                if (!File.Exists(scriptPath))
+                {
+                    MessageBox.Show("PowerShell script not found:\n" + scriptPath, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Determine action
+                string action = itmOptionsAddContextMenu.Checked ? "Remove" : "Add";
+                string exePath = Application.ExecutablePath;
+
+                // Build PowerShell arguments
+                string arguments = $"-ExecutionPolicy Bypass -File \"{scriptPath}\" -Action {action} -ExecutablePath \"{exePath}\"";
+
+                // Start PowerShell process
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = arguments,
+                    Verb = "runas", // Run as administrator
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var process = Process.Start(psi);
+                process.WaitForExit();
+
+                // Update the checked state based on action
+                itmOptionsAddContextMenu.Checked = !itmOptionsAddContextMenu.Checked;
+
+                MessageBox.Show(
+                    action == "Add"
+                        ? "Context menu entry added."
+                        : "Context menu entry removed.",
+                    "Info",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                //if (!itmOptionsAddContextMenu.Checked)  // add key
+                //{
+                //    using (RegistryKey key = Registry.ClassesRoot.CreateSubKey("Folder\\shell\\RegexRenamer"))
+                //    {
+                //        if (key != null)
+                //        {
+                //            key.SetValue("", "Rename using RegexRenamer");
+                //            key.Close();
+                //        }
+                //    }
+                //    using (RegistryKey key = Registry.ClassesRoot.CreateSubKey("Folder\\shell\\RegexRenamer\\command"))
+                //    {
+                //        if (key != null)
+                //        {
+                //            key.SetValue("", Application.ExecutablePath + " \"%L\"");
+                //            key.Close();
+                //        }
+                //    }
+                //    itmOptionsAddContextMenu.Checked = true;
+                //}
+                //else  // delete key
+                //{
+                //    using (RegistryKey key = Registry.ClassesRoot.OpenSubKey("Folder\\shell\\RegexRenamer"))
+                //    {
+                //        if (key != null)  // make sure exists before trying to delete
+                //        {
+                //            key.Close();
+                //            Registry.ClassesRoot.DeleteSubKeyTree("Folder\\shell\\RegexRenamer");
+                //        }
+                //    }
+                //    itmOptionsAddContextMenu.Checked = false;
+                //}
+
+
             }
-          }
-          using( RegistryKey key = Registry.ClassesRoot.CreateSubKey( "Folder\\shell\\RegexRenamer\\command" ) )
-          {
-            if( key != null )
-            {
-              key.SetValue( "", Application.ExecutablePath + " \"%L\"" );
-              key.Close();
-            }
-          }
-          itmOptionsAddContextMenu.Checked = true;
-        }
-        else  // delete key
-        {
-          using( RegistryKey key = Registry.ClassesRoot.OpenSubKey( "Folder\\shell\\RegexRenamer" ) )
-          {
-            if( key != null )  // make sure exists before trying to delete
-            {
-              key.Close();
-              Registry.ClassesRoot.DeleteSubKeyTree( "Folder\\shell\\RegexRenamer" );
-            }
-          }
-          itmOptionsAddContextMenu.Checked = false;
-        }
-      }
-      catch( Exception ex )
+            catch ( Exception ex )
       {
         MessageBox.Show( ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
       }

@@ -210,6 +210,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <AdditionalFiles Include="RegexRenamer-ContextMenu.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
     <None Include="RegexRenamer_TemporaryKey.pfx" />
     <None Include="Resources\icon.ico" />
   </ItemGroup>
