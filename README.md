@@ -9,7 +9,7 @@ This fork modifies the following:
 
 ## Project Samples
 
-| ![image](https://github.com/user-attachments/assets/df915cee-bc59-4431-a5bf-079fc8735e85) |
+| ![image](https://github.com/user-attachments/assets/afcc6918-ad69-4a26-bd65-9f615ab3fcc2) |
 | --- |
 
 
