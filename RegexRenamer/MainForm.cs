@@ -25,7 +25,8 @@ using System.Windows.Forms;
 
 using Furty.Windows.Forms;      // ExtractIcons
 using Microsoft.Win32;          // Registry
-using System.Reflection;        // FieldInfo
+using System.Reflection;
+using System.Linq;        // FieldInfo
 
 
 namespace RegexRenamer
@@ -720,10 +721,22 @@ namespace RegexRenamer
         if( rbFilterGlob.Checked && filterText == "*.*" )  // convert to "*" (include files with no extension)
           filterText = "*";
 
-        if( rbFilterGlob.Checked )  // convert glob to regex
-          filterText = "^" + Regex.Escape( filterText ).Replace( "\\*", ".*" ).Replace( "\\?", "." ) + "$";
+                if (rbFilterGlob.Checked)
+                { // convert glob to regex
+                    filterText = Regex.Escape(filterText.Replace(", ", ","))
+                        .Replace("\\*", ".*")
+                        .Replace("\\?", ".");
 
-        filter = new Regex( filterText, RegexOptions.IgnoreCase );
+                    if (filterText.Contains(","))
+                        filterText = "(" 
+                            + filterText
+                            .Replace(",", "|")
+                            + ")";
+
+                    filterText = "^" + filterText + "$";
+                }
+
+        filter = new Regex( filterText, RegexOptions.IgnoreCase | RegexOptions.Multiline );
       }
 
 
@@ -735,7 +748,15 @@ namespace RegexRenamer
 
       DirectoryInfo activeDir = new DirectoryInfo( activePath );
 
-      if( RenameFolders )  // folders
+     string[] ExcludedKeywords_array = txtExcludeFilter.Text
+        .Replace("Excluded Keywords", "")
+        .Replace(", ", ",")
+        .Split(',')
+        .Select(k => k.Trim())
+        .Where(k => !string.IsNullOrEmpty(k))
+        .ToArray();
+
+      if ( RenameFolders )  // folders
       {
         DirectoryInfo[] dirs = new DirectoryInfo[0];
         try
@@ -751,9 +772,9 @@ namespace RegexRenamer
         {
           fileCount.total++;
 
-          // ignore if filtered out
-
-          if( filter != null && filter.IsMatch( dir.Name ) == cbFilterExclude.Checked )
+         // ignore if filtered out
+         bool ExcludedbyKeyword = (ExcludedKeywords_array.Any(keyword => dir.Name.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0 ? true : false));
+         if ( ExcludedbyKeyword || (filter != null && filter.IsMatch(dir.Name) == cbFilterExclude.Checked) )
           {
             if( !inactiveFiles.ContainsKey( dir.FullName.ToLower() ) )
               inactiveFiles.Add( dir.FullName.ToLower(), InactiveReason.Filtered );
@@ -798,9 +819,9 @@ namespace RegexRenamer
           fileCount.total++;
 
 
-          // ignore if filtered out
-
-          if( filter != null && filter.IsMatch( file.Name ) == cbFilterExclude.Checked )
+        // ignore if filtered out
+        bool ExcludedbyKeyword = (ExcludedKeywords_array.Any(keyword => file.Name.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0 ? true : false));
+        if (ExcludedbyKeyword || (filter != null && filter.IsMatch(file.Name) == cbFilterExclude.Checked))
           {
             if( !inactiveFiles.ContainsKey( file.FullName.ToLower() ) )
               inactiveFiles.Add( file.FullName.ToLower(), InactiveReason.Filtered );
@@ -2272,15 +2293,21 @@ namespace RegexRenamer
     }
     private void txtFilter_Leave( object sender, EventArgs e )
     {
-      if( cbFilterExclude.Focused || rbFilterGlob.Focused || rbFilterRegex.Focused ) return;
+            //if( cbFilterExclude.Focused || rbFilterGlob.Focused || rbFilterRegex.Focused ) return;
 
-      EnableUpdates = false;
-      txtFilter.Text = activeFilter;
-      EnableUpdates = true;
+            //EnableUpdates = false;
+            //txtFilter.Text = activeFilter;
+            //EnableUpdates = true;
 
-      validFilter = true;
-      txtFilter.BackColor = SystemColors.Window;
-      toolTip.Hide( txtFilter );
+            //validFilter = true;
+            //txtFilter.BackColor = SystemColors.Window;
+            if(txtFilter.Text == "")
+                if(rbFilterRegex.Checked)
+                    txtFilter.Text = ".*";   // default regex filter
+                else
+                    txtFilter.Text = "*.*";  // default glob filter
+
+            toolTip.Hide(txtFilter);
     }
     private void cbFilterExclude_CheckedChanged( object sender, EventArgs e )
     {
@@ -3261,6 +3288,38 @@ namespace RegexRenamer
                 UpdatePreview();
 
             ApplyFilter();
+        }
+
+        private void btnApplyFilter_Click(object sender, EventArgs e)
+        {
+            ApplyFilter();
+        }
+
+        private void txtExcludeFilter_Enter(object sender, EventArgs e)
+        {
+            if (txtExcludeFilter.Text == "Excluded Keywords")
+            {
+                txtExcludeFilter.Text = "";
+                txtExcludeFilter.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void txtExcludeFilter_Leave(object sender, EventArgs e)
+        {
+            if (txtExcludeFilter.Text == "")
+            {
+                txtExcludeFilter.Text = "Excluded Keywords";
+                txtExcludeFilter.ForeColor = SystemColors.GrayText;
+            }
+        }
+
+        private void txtExcludeFilter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)  // apply filter
+            {
+                e.SuppressKeyPress = true;  // prevent beep on enter if valid filter
+                ApplyFilter();
+            }
         }
     }
 }

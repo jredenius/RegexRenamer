@@ -205,6 +205,8 @@ namespace RegexRenamer
             this.cbModifierG = new System.Windows.Forms.CheckBox();
             this.cbModifierI = new System.Windows.Forms.CheckBox();
             this.cbModifierX = new System.Windows.Forms.CheckBox();
+            this.txtExcludeFilter = new System.Windows.Forms.TextBox();
+            this.btnApplyFilter = new System.Windows.Forms.Button();
             this.gbFilter.SuspendLayout();
             this.pnlStats.SuspendLayout();
             this.tsMenu.SuspendLayout();
@@ -282,16 +284,17 @@ namespace RegexRenamer
             // gbFilter
             // 
             this.gbFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbFilter.Controls.Add(this.btnApplyFilter);
+            this.gbFilter.Controls.Add(this.txtExcludeFilter);
             this.gbFilter.Controls.Add(this.cbRecursive);
-            this.gbFilter.Controls.Add(this.cbFilterExclude);
             this.gbFilter.Controls.Add(this.txtFilter);
             this.gbFilter.Controls.Add(this.rbFilterGlob);
             this.gbFilter.Controls.Add(this.rbFilterRegex);
-            this.gbFilter.Location = new System.Drawing.Point(1074, 9);
+            this.gbFilter.Location = new System.Drawing.Point(961, 9);
             this.gbFilter.Margin = new System.Windows.Forms.Padding(4);
             this.gbFilter.Name = "gbFilter";
             this.gbFilter.Padding = new System.Windows.Forms.Padding(4);
-            this.gbFilter.Size = new System.Drawing.Size(231, 67);
+            this.gbFilter.Size = new System.Drawing.Size(344, 67);
             this.gbFilter.TabIndex = 2;
             this.gbFilter.TabStop = false;
             this.gbFilter.Text = "Filter";
@@ -302,10 +305,10 @@ namespace RegexRenamer
             this.cbRecursive.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbRecursive.AutoSize = true;
-            this.cbRecursive.Location = new System.Drawing.Point(8, 44);
+            this.cbRecursive.Location = new System.Drawing.Point(250, 16);
             this.cbRecursive.Name = "cbRecursive";
             this.cbRecursive.Size = new System.Drawing.Size(90, 20);
-            this.cbRecursive.TabIndex = 7;
+            this.cbRecursive.TabIndex = 5;
             this.cbRecursive.Text = "Recursive";
             this.toolTip.SetToolTip(this.cbRecursive, "Recursive folder searching");
             this.cbRecursive.UseVisualStyleBackColor = true;
@@ -318,26 +321,27 @@ namespace RegexRenamer
             this.cbFilterExclude.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.cbFilterExclude.Image = global::RegexRenamer.Properties.Resources.x;
             this.cbFilterExclude.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbFilterExclude.Location = new System.Drawing.Point(127, 17);
+            this.cbFilterExclude.Location = new System.Drawing.Point(1305, 9);
             this.cbFilterExclude.Margin = new System.Windows.Forms.Padding(0);
             this.cbFilterExclude.Name = "cbFilterExclude";
             this.cbFilterExclude.Size = new System.Drawing.Size(16, 24);
             this.cbFilterExclude.TabIndex = 2;
             this.toolTip.SetToolTip(this.cbFilterExclude, "Exclude (invert filter)");
             this.cbFilterExclude.UseVisualStyleBackColor = true;
+            this.cbFilterExclude.Visible = false;
             this.cbFilterExclude.CheckedChanged += new System.EventHandler(this.cbFilterExclude_CheckedChanged);
             // 
             // txtFilter
             // 
-            this.txtFilter.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFilter.Font = new System.Drawing.Font("Courier New", 8.25F);
-            this.txtFilter.Location = new System.Drawing.Point(11, 17);
+            this.txtFilter.Location = new System.Drawing.Point(6, 16);
             this.txtFilter.Margin = new System.Windows.Forms.Padding(4);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(115, 23);
+            this.txtFilter.Size = new System.Drawing.Size(163, 23);
             this.txtFilter.TabIndex = 1;
             this.txtFilter.Text = "*.*";
-            this.toolTip.SetToolTip(this.txtFilter, "Press ENTER to apply filter");
+            this.toolTip.SetToolTip(this.txtFilter, "Global = Comma seperated values [or Regex filter]");
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             this.txtFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFilter_KeyDown);
             this.txtFilter.Leave += new System.EventHandler(this.txtFilter_Leave);
@@ -350,13 +354,13 @@ namespace RegexRenamer
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rbFilterGlob.AutoSize = true;
             this.rbFilterGlob.Checked = true;
-            this.rbFilterGlob.Location = new System.Drawing.Point(159, 15);
+            this.rbFilterGlob.Location = new System.Drawing.Point(177, 17);
             this.rbFilterGlob.Margin = new System.Windows.Forms.Padding(4);
             this.rbFilterGlob.Name = "rbFilterGlob";
-            this.rbFilterGlob.Size = new System.Drawing.Size(57, 20);
+            this.rbFilterGlob.Size = new System.Drawing.Size(68, 20);
             this.rbFilterGlob.TabIndex = 3;
             this.rbFilterGlob.TabStop = true;
-            this.rbFilterGlob.Text = "Glob";
+            this.rbFilterGlob.Text = "Global";
             this.rbFilterGlob.UseVisualStyleBackColor = true;
             this.rbFilterGlob.Click += new System.EventHandler(this.rbFilterGlob_Click);
             // 
@@ -365,11 +369,11 @@ namespace RegexRenamer
             this.rbFilterRegex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rbFilterRegex.AutoSize = true;
-            this.rbFilterRegex.Location = new System.Drawing.Point(159, 37);
+            this.rbFilterRegex.Location = new System.Drawing.Point(177, 42);
             this.rbFilterRegex.Margin = new System.Windows.Forms.Padding(4);
             this.rbFilterRegex.Name = "rbFilterRegex";
             this.rbFilterRegex.Size = new System.Drawing.Size(68, 20);
-            this.rbFilterRegex.TabIndex = 3;
+            this.rbFilterRegex.TabIndex = 4;
             this.rbFilterRegex.Text = "Regex";
             this.rbFilterRegex.UseVisualStyleBackColor = true;
             this.rbFilterRegex.CheckedChanged += new System.EventHandler(this.rbFilterRegex_CheckedChanged);
@@ -382,7 +386,7 @@ namespace RegexRenamer
             this.pnlStats.Controls.Add(this.lblStatsShown);
             this.pnlStats.Controls.Add(this.lblStatsFiltered);
             this.pnlStats.Controls.Add(this.lblStatsTotal);
-            this.pnlStats.Location = new System.Drawing.Point(750, 19);
+            this.pnlStats.Location = new System.Drawing.Point(641, 19);
             this.pnlStats.Margin = new System.Windows.Forms.Padding(4);
             this.pnlStats.Name = "pnlStats";
             this.pnlStats.Size = new System.Drawing.Size(189, 44);
@@ -469,7 +473,7 @@ namespace RegexRenamer
             this.txtReplace.Location = new System.Drawing.Point(82, 46);
             this.txtReplace.Margin = new System.Windows.Forms.Padding(4);
             this.txtReplace.Name = "txtReplace";
-            this.txtReplace.Size = new System.Drawing.Size(607, 23);
+            this.txtReplace.Size = new System.Drawing.Size(485, 23);
             this.txtReplace.TabIndex = 2;
             this.toolTip.SetToolTip(this.txtReplace, "Use $1, $2, ... to insert captured text");
             this.txtReplace.TextChanged += new System.EventHandler(this.txtReplace_TextChanged);
@@ -547,7 +551,7 @@ namespace RegexRenamer
             this.mnuNumbering,
             this.mnuMoveCopy});
             this.tsMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.tsMenu.Location = new System.Drawing.Point(943, 7);
+            this.tsMenu.Location = new System.Drawing.Point(834, 7);
             this.tsMenu.Name = "tsMenu";
             this.tsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.tsMenu.Size = new System.Drawing.Size(123, 66);
@@ -1557,7 +1561,7 @@ namespace RegexRenamer
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(16, 75);
             this.progressBar.Margin = new System.Windows.Forms.Padding(4);
@@ -1610,7 +1614,7 @@ namespace RegexRenamer
             this.cmbMatch.Location = new System.Drawing.Point(82, 13);
             this.cmbMatch.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMatch.Name = "cmbMatch";
-            this.cmbMatch.Size = new System.Drawing.Size(607, 25);
+            this.cmbMatch.Size = new System.Drawing.Size(485, 25);
             this.cmbMatch.TabIndex = 1;
             this.toolTip.SetToolTip(this.cmbMatch, "Shift+rightclick for a menu of regex elements");
             this.cmbMatch.SelectedIndexChanged += new System.EventHandler(this.cmbMatch_SelectedIndexChanged);
@@ -1637,7 +1641,7 @@ namespace RegexRenamer
             // 
             this.cbModifierG.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbModifierG.AutoSize = true;
-            this.cbModifierG.Location = new System.Drawing.Point(707, 31);
+            this.cbModifierG.Location = new System.Drawing.Point(598, 31);
             this.cbModifierG.Margin = new System.Windows.Forms.Padding(4);
             this.cbModifierG.Name = "cbModifierG";
             this.cbModifierG.Size = new System.Drawing.Size(41, 20);
@@ -1652,7 +1656,7 @@ namespace RegexRenamer
             // 
             this.cbModifierI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbModifierI.AutoSize = true;
-            this.cbModifierI.Location = new System.Drawing.Point(707, 13);
+            this.cbModifierI.Location = new System.Drawing.Point(598, 13);
             this.cbModifierI.Margin = new System.Windows.Forms.Padding(4);
             this.cbModifierI.Name = "cbModifierI";
             this.cbModifierI.Size = new System.Drawing.Size(36, 20);
@@ -1667,7 +1671,7 @@ namespace RegexRenamer
             // 
             this.cbModifierX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbModifierX.AutoSize = true;
-            this.cbModifierX.Location = new System.Drawing.Point(707, 50);
+            this.cbModifierX.Location = new System.Drawing.Point(598, 50);
             this.cbModifierX.Margin = new System.Windows.Forms.Padding(4);
             this.cbModifierX.Name = "cbModifierX";
             this.cbModifierX.Size = new System.Drawing.Size(39, 20);
@@ -1678,12 +1682,40 @@ namespace RegexRenamer
             this.cbModifierX.UseVisualStyleBackColor = true;
             this.cbModifierX.CheckedChanged += new System.EventHandler(this.cbModifierX_CheckedChanged);
             // 
+            // txtExcludeFilter
+            // 
+            this.txtExcludeFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtExcludeFilter.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.txtExcludeFilter.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.txtExcludeFilter.Location = new System.Drawing.Point(6, 41);
+            this.txtExcludeFilter.Margin = new System.Windows.Forms.Padding(4);
+            this.txtExcludeFilter.Name = "txtExcludeFilter";
+            this.txtExcludeFilter.Size = new System.Drawing.Size(163, 23);
+            this.txtExcludeFilter.TabIndex = 2;
+            this.txtExcludeFilter.Text = "Excluded Keywords";
+            this.toolTip.SetToolTip(this.txtExcludeFilter, "Comma seperated list of keywords to exclude from match");
+            this.txtExcludeFilter.Enter += new System.EventHandler(this.txtExcludeFilter_Enter);
+            this.txtExcludeFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtExcludeFilter_KeyDown);
+            this.txtExcludeFilter.Leave += new System.EventHandler(this.txtExcludeFilter_Leave);
+            // 
+            // btnApplyFilter
+            // 
+            this.btnApplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnApplyFilter.Location = new System.Drawing.Point(250, 39);
+            this.btnApplyFilter.Name = "btnApplyFilter";
+            this.btnApplyFilter.Size = new System.Drawing.Size(90, 23);
+            this.btnApplyFilter.TabIndex = 6;
+            this.btnApplyFilter.Text = "Refresh";
+            this.btnApplyFilter.UseVisualStyleBackColor = false;
+            this.btnApplyFilter.Click += new System.EventHandler(this.btnApplyFilter_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1321, 760);
             this.Controls.Add(this.scMain);
+            this.Controls.Add(this.cbFilterExclude);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.lblMatch);
             this.Controls.Add(this.cmbMatch);
@@ -1894,5 +1926,7 @@ namespace RegexRenamer
         private System.Windows.Forms.CheckBox cbModifierG;
         private System.Windows.Forms.CheckBox cbModifierI;
         private System.Windows.Forms.CheckBox cbModifierX;
+        private System.Windows.Forms.Button btnApplyFilter;
+        private System.Windows.Forms.TextBox txtExcludeFilter;
     }
 }
